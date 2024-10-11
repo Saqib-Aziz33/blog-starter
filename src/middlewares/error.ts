@@ -6,5 +6,6 @@ export default function errorHandler(
   res: Response,
   next: NextFunction
 ) {
+  console.log(err);
   res.status(500).send("something went wrong");
 }

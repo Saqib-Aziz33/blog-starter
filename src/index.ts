@@ -2,11 +2,11 @@ import express, { Express } from "express";
 import errorHandler from "./middlewares/error";
 import middlewares from "./middlewares";
 import router from "./routes/index.route";
-import { testDbConnection } from "db";
+import sequelize, { testDbConnection } from "db";
 
 const app: Express = express();
 
-testDbConnection();
+sequelize.sync({ force: false });
 // middlewares
 middlewares(app);
 

@@ -9,6 +9,8 @@ function middlewares(app: Express) {
   app.use(express.static(path.join(__dirname, "../../public")));
   app.use(cors());
   app.use(morgan("tiny"));
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 }
 
 export default middlewares;

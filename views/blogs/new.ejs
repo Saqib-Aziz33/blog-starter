@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- BOOTSTRAP -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- QUILL -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+    <!-- NOTY -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta-deprecated/lib/noty.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta/lib/themes/nest.css"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body class="container my-5">
+    <main class="container">
+      <h1>Blog Application</h1>
+
+      <form id="form" class="d-flex flex-column gap-3">
+        <input
+          type="text"
+          required
+          class="form-control"
+          placeholder="Title"
+          name="title"
+        />
+        <input
+          type="text"
+          required
+          class="form-control"
+          placeholder="Summary"
+          name="summary"
+        />
+        <input
+          type="text"
+          required
+          class="form-control"
+          placeholder="my-blog-url"
+          name="slug"
+        />
+        <div class="bg-light">
+          <div id="editor"></div>
+        </div>
+        <button id="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </main>
+  </body>
+  <!-- SCRIPTS -->
+  <!-- NOTY -->
+  <script src="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta-deprecated/lib/noty.min.js"></script>
+  <!-- QUILL -->
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+  <script>
+    const toolbarOptions = [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
+      ["link", "formula"],
+
+      [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      [{ direction: "rtl" }], // text direction
+
+      [{ header: [2, 3, 4, 5, 6, false] }],
+
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      [{ align: [] }],
+    ];
+
+    const quill = new Quill("#editor", {
+      modules: {
+        toolbar: toolbarOptions,
+      },
+      placeholder: "start blog content...",
+      theme: "snow",
+    });
+
+    const form = document.querySelector("#form");
+
+    form.addEventListener("submit", handleSubmit);
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const formdata = new FormData(form);
+      const payload = {
+        title: formdata.get("title"),
+        summary: formdata.get("summary"),
+        slug: formdata.get("slug"),
+        content: quill.root.innerHTML,
+      };
+      new Noty({
+        theme: "nest",
+        text: "Hi!",
+        closeWith: ["button"],
+        layout: "bottomRight",
+        type: "success",
+      }).show();
+    }
+  </script>
+</html>
